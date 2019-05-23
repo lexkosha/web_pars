@@ -1,12 +1,11 @@
-from requests_html import HTMLSession
 from bs4 import BeautifulSoup
 
 import requests
 import csv
 
 
-URL = 'https://ecoten.ru/goods/1112'
-URL_XML = 'https://ecoten.ru/sitemap.xml'
+URL = 'site.ru'
+URL_XML = 'site/sitemap.xml'
 
 
 def get_html(url):
