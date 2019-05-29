@@ -1,11 +1,14 @@
 from bs4 import BeautifulSoup
 
 import requests
+
+
 import csv
+import re
 
 
 URL = 'site.ru'
-URL_XML = 'site/sitemap.xml'
+URL_XML = '/sitemap.xml'
 
 
 def get_html(url):
@@ -29,6 +32,7 @@ def cleam_xml_url(xml_url):
 def check_html(html):
     """Вытаскиваем таблицу размеров и артикул. Содаем словарь"""
     soup = BeautifulSoup(html, 'lxml')
+    html_text = html
     try:
         table = soup.find('div', {'id': 'tb_sizes'})
     except:
@@ -37,8 +41,13 @@ def check_html(html):
         sku = table.find('th').text[9::1]
     except:
         sku = 'Нет данных'
+    try:
+        manual = re.search(r'<h2>Инструкция по применению:.*?</h2>(.*?)<h2', html_text, flags=re.S)[0][0:-3]
+    except:
+        manual = 'Нет инструкции'
     data = {'table': table,
-            'sku': sku}
+            'sku': sku,
+            'manual': manual}
     return data
 
 
@@ -47,7 +56,8 @@ def write_csv(data):
         writer = csv.writer(f, delimiter=';')
 
         writer.writerow((data['table'],
-                         data['sku']))
+                         data['sku'],
+                         data['manual']))
         print(data['sku'], 'Спарсил')
 
 

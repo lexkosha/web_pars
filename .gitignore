@@ -3,3 +3,4 @@ config.py
 .idea
 ecoten.csv
 ecoten.xls
+.DS_Store
