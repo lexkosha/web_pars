@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
 
 import requests
 
@@ -12,8 +13,10 @@ URL_XML = '/sitemap.xml'
 
 
 def get_html(url):
-    """Получаем html"""
-    r = requests.get(url)
+    """Получаем html и меняем user agent на рандомный выбор"""
+    ua = UserAgent()
+    headers = {'user-agent':f'{ua.random}'}
+    r = requests.get(url, headers=headers)
     return r.text
 
 
